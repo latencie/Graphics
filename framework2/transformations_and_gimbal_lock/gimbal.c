@@ -66,14 +66,12 @@ void drawRotatedTeapot(float rotx, float roty, float rotz)
     glRotatef(rotz, 0.0, 0.0, 1.0);
 
     // teapot
-
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 
     glutSolidTeapot(1.0);
 
     // local coordinate axes
-
     glDisable(GL_LIGHTING);
     glLineWidth(2.0);
 
@@ -100,9 +98,31 @@ void drawTeapots(void)
     /* This function is called from DrawGLScene() below */
 
     glPushMatrix();
-
     drawRotatedTeapot(x_rotation, 0.0, z_rotation);
+    glPopMatrix();
 
+    //move the original teapot with 5 units on the x axis to the right
+    glPushMatrix();
+    GLfloat A[16] = {
+        1.0, 0.0, 0.0, 0.0,
+        0.0, 1.0, 0.0, 0.0,
+        0.0, 0.0, 1.0, 0.0,
+        5.0, 0.0, 0.0, 1.0
+    };
+    glMultMatrixf(A);
+    drawRotatedTeapot(x_rotation, 45.0, z_rotation);
+    glPopMatrix();
+
+    //move the original teapot with 10 units on the x axis to the right
+    glPushMatrix();
+    GLfloat B[16] = {
+        1.0, 0.0, 0.0, 0.0,
+        0.0, 1.0, 0.0, 0.0,
+        0.0, 0.0, 1.0, 0.0,
+        10.0, 0.0, 0.0, 1.0
+    };
+    glMultMatrixf(B);
+    drawRotatedTeapot(x_rotation, 90.0, z_rotation);
     glPopMatrix();
 }
 

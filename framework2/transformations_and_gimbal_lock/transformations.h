@@ -13,5 +13,4 @@ void myScalef(GLfloat x, GLfloat y, GLfloat z);
 void myTranslatef(GLfloat x, GLfloat y, GLfloat z);
 void myRotatef(GLfloat angle, GLfloat x, GLfloat y, GLfloat z);
 
-
 #endif

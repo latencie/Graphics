@@ -15,9 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
-
-#include <OpenGL/gl.h>
+#include <GL/gl.h>
 #include "transformations.h"
 
 /* ANSI C/ISO C89 does not specify this constant (?) */
@@ -25,8 +23,9 @@
 #define M_PI           3.14159265358979323846  /* pi */
 #endif
 
-double return_norm(GLfloat x, GLfloat y, GLfloat z) {
-
+double return_norm(GLfloat x, GLfloat y, GLfloat z)
+{
+    return sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
 }
 
 
@@ -62,13 +61,12 @@ void myRotatef(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
     GLfloat u[3], v[3], w[3], t[3], smallest;
     GLdouble norm;
     int smallest_index;
-    double inproduct;
     //
     // 1. Create the orthonormal basis
     //
 
     // Store the incoming rotation axis in w and normalize w
-    norm = sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
+    norm = return_norm(x, y, z);
     w[0] = x / norm;
     w[1] = y / norm;
     w[2] = z / norm;
@@ -100,9 +98,8 @@ void myRotatef(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
     u[1] = t[2] * w[0] - t[0] * w[2];
     u[2] = t[0] * w[1] - t[1] * w[0];
 
-
     // Normalize u
-    norm = sqrt(pow(u[0], 2) + pow(u[1], 2) + pow(u[2], 2));
+    norm = return_norm(u[0], u[1], u[2]);
     u[0] = u[0] / norm;
     u[1] = u[1] / norm;
     u[2] = u[2] / norm;

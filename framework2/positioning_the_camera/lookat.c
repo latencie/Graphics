@@ -26,7 +26,7 @@
 #endif
 
 
-// returns the norm of a vector
+// returns the length of a vector
 double return_norm(GLdouble x, GLdouble y, GLdouble z)
 {
     return sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));

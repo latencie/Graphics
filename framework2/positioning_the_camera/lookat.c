@@ -42,26 +42,26 @@ void myLookAt(GLdouble eyeX, GLdouble eyeY, GLdouble eyeZ,
     // create camera coordinate system
     
     double norm = return_norm(centerX, centerY, centerZ);
-    GLdouble cz[] =  {-centerX/norm, -centerY/norm, -centerZ/norm};
+    GLdouble cz[] =  {centerX/norm, centerY/norm, centerZ/norm};
     
-    GLdouble cx[] =  {upY*cz[2]-upZ*cz[1], 
-                      -upX*cz[2]+upZ*cz[0], 
-                      upX*cz[1]-upY*cz[0]}; 
+    GLdouble cx[] =  {cz[1]*upZ-cz[2]*upY, 
+                      -cz[0]*upZ+cz[2]*upX, 
+                      cz[0]*upY-cz[1]*upX}; 
     norm = return_norm(cx[0], cx[1], cx[2]);
     cx[0] = cx[0]/norm;
     cx[1] = cx[1]/norm;
     cx[2] = cx[2]/norm;
     
-    GLdouble cy[] =  {cz[1]*cx[2]-cz[2]*cx[1], 
-                      -cz[0]*cx[2]+cz[2]*cx[0], 
-                      cz[0]*cx[1]-cz[1]*cx[0]};
+    GLdouble cy[] =  {cx[1]*cz[2]-cx[2]*cz[1], 
+                      -cx[0]*cz[2]+cx[2]*cz[0], 
+                      cx[0]*cz[1]-cx[1]*cz[0]};
         
     // create rotation matrix
     GLfloat R[16] = 
     {
-        cx[0], cy[0], cz[0], 0.,
-        cx[1], cy[1], cz[1], 0.,
-        cx[2], cy[2], cz[2], 0.,
+        cx[0], cy[0], -cz[0], 0.,
+        cx[1], cy[1], -cz[1], 0.,
+        cx[2], cy[2], -cz[2], 0.,
         0., 0., 0., 1.
     };
 

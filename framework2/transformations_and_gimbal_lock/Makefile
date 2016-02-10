@@ -2,8 +2,8 @@ CC=gcc
 
 WARNING_FLAGS=-Wall -Wextra -Werror-implicit-function-declaration -Wshadow -Wstrict-prototypes -pedantic-errors
 CFLAGS=-O2 -std=c99 $(WARNING_FLAGS)
-LDFLAGS=-framework OpenGL -framework GLUT -lm
-#LDFLAGS=-lglut -lglu -lgl
+#LDFLAGS=-framework OpenGL -framework GLUT -lm
+LDFLAGS=-lglut -lGLU -lGL -lm
 
 .c.o:
 	$(CC) -c $(CFLAGS) $<

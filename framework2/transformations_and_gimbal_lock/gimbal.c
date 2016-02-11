@@ -4,12 +4,11 @@
  * Description ..... Draw teapots that can be interactively rotated with the mouse
  * Created by ...... Paul Melis
  *
- * Student name ....
- * Student email ...
- * Collegekaart ....
- * Date ............
+ * Student name Gracia Michelle & Lars Lokhoff
+ * Student email michellegracia@gmail.com & lars.lokhoff@hotmail.com
+ * Collegekaart & 10606165
+ * Date 12-02-2016
  * Comments ........
- *
  *
  * (always fill in these fields before submitting!!)
  */

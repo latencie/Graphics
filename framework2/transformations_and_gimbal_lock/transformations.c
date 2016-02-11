@@ -2,10 +2,10 @@
  *
  * Filename ........ transformations.c
  * Description ..... Contains the re-programmed translation, rotation and scaling functions
- * Student name ....
- * Student email ...
- * Collegekaart ....
- * Date ............
+ * Student name Gracia Michelle & Lars Lokhoff
+ * Student email michellegracia@gmail.com & lars.lokhoff@hotmail.com
+ * Collegekaart & 10606165
+ * Date 12-02-2016
  * Comments ........
  *
  *
@@ -23,12 +23,14 @@
 #define M_PI           3.14159265358979323846  /* pi */
 #endif
 
+//This function returns the norm of a vector (x, y, z)
 double return_norm(GLfloat x, GLfloat y, GLfloat z)
 {
     return sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
 }
 
-
+//This function applies the scaling matrix to the teapot by 
+//putting the factors in the right place of the matrix
 void myScalef(GLfloat x, GLfloat y, GLfloat z)
 {
     GLfloat M[16] =
@@ -42,7 +44,7 @@ void myScalef(GLfloat x, GLfloat y, GLfloat z)
     glMultMatrixf(M);
 }
 
-
+//This function creates the translation matrix to move the teapot around
 void myTranslatef(GLfloat x, GLfloat y, GLfloat z)
 {
     GLfloat M[16] =
@@ -56,15 +58,13 @@ void myTranslatef(GLfloat x, GLfloat y, GLfloat z)
     glMultMatrixf(M);
 }
 
+//This function rotates the teapot following the steps from the assignment
 void myRotatef(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
 {
     GLfloat u[3], v[3], w[3], t[3], smallest;
     GLdouble norm;
     int smallest_index;
-    //
-    // 1. Create the orthonormal basis
-    //
-
+    
     // Store the incoming rotation axis in w and normalize w
     norm = return_norm(x, y, z);
     w[0] = x / norm;
@@ -77,6 +77,7 @@ void myRotatef(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
     t[1] = w[1];
     t[2] = w[2];
 
+    //Here we find the smalles value of t, this needs to be changed to 1
     if(t[0] < t[1]) {
         smallest = t[0];
         smallest_index = 0;
@@ -91,6 +92,7 @@ void myRotatef(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
         smallest_index = 2;
     }
 
+    //Change the smalles value to 1
     t[smallest_index] = 1;
 
     // Compute u = t x w
@@ -108,14 +110,6 @@ void myRotatef(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
     v[0] = w[1] * u[2] - w[2] * u[1];
     v[1] = w[2] * u[0] - w[0] * u[2];
     v[2] = w[0] * u[1] - w[1] * u[0];
-
-    // At this point u, v and w should form an orthonormal basis.
-    // If your routine does not seem to work correctly it might be
-    // a good idea to the check the vector values.
-
-    //
-    // 2. Set up the three matrices making up the rotation
-    //
 
     // Specify matrix A
     GLfloat A[16] =
@@ -139,7 +133,6 @@ void myRotatef(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
     };
 
     // Specify matrix C
-
     GLfloat C[16] =
     {
         u[0], v[0], w[0], 0.0,
@@ -147,10 +140,6 @@ void myRotatef(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
         u[2], v[2], w[2], 0.0,
         0.0, 0.0, 0.0, 1.0
     };
-
-    //
-    // 3. Apply the matrices to get the combined rotation
-    //
 
     glMultMatrixf(A);
     glMultMatrixf(B);

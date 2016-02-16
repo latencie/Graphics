@@ -1,15 +1,13 @@
 /* Computer Graphics, Assignment, Translations, Rotations and Scaling
  *
  * Filename ........ transformations.c
- * Description ..... Contains the re-programmed translation, rotation and scaling functions
- * Student name Gracia Michelle & Lars Lokhoff
+ * Description ..... Contains the re-programmed translation, rotation and scaling functions 
+ *
+ * Student names Gracia Redder & Lars Lokhoff
  * Student email michellegracia@gmail.com & lars.lokhoff@hotmail.com
- * Collegekaart & 10606165
+ * Collegekaart 0478660 & 10606165
  * Date 12-02-2016
- * Comments ........
  *
- *
- * (always fill in these fields before submitting!!)
  */
 
 #include <stdio.h>
@@ -23,7 +21,7 @@
 #define M_PI           3.14159265358979323846  /* pi */
 #endif
 
-//This function returns the norm of a vector (x, y, z)
+//This function returns the length of a vector (x, y, z)
 double return_norm(GLfloat x, GLfloat y, GLfloat z)
 {
     return sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));

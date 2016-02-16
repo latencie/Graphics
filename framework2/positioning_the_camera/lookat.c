@@ -4,15 +4,13 @@
  * Description ..... Contains the re-programmed lookAt function
  * Created by ...... Jurgen Sturm 
  *
- * Student name Gracia Michelle & Lars Lokhoff
+ * Student name Gracia Redder & Lars Lokhoff
  * Student email michellegracia@gmail.com & lars.lokhoff@hotmail.com 
- * Collegekaart & 10606165
+ * Collegekaart 0478660 & 10606165
  * Date 12-02-2016
- * Comments ........
  *
- *
- * (always fill in these fields before submitting!!)
  */
+
 #include <GL/glut.h>   
 #include <GL/gl.h>
 #include <GL/glu.h>

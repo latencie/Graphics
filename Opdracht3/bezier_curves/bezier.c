@@ -18,15 +18,22 @@
 #include "bezier.h"
 #include <stdio.h>
 
-int return_factorial(int num) {
+/*
+ * return factorial of integer
+ */
+int return_factorial(int num) 
+{
 	int fact = 1;
 
-	if(num <= 1) {
+	if(num <= 1) 
+	{
 		return 1;
 	}
 
-	else {
-		for(int i = 1; i <= num; i++) {
+	else 
+	{
+		for(int i = 1; i <= num; i++) 
+		{
 			fact = fact * i;
 		}
 
@@ -34,6 +41,10 @@ int return_factorial(int num) {
 	}
 }
 
+
+/* 
+ * return the kth Bernstein polynomial of degree n
+ */
 float return_bernstein(int n, int k, float u) {
 	float bernstein;
 
@@ -111,9 +122,87 @@ draw_bezier_curve(int num_segments, control_point p[], int num_points)
    Return 0 if no intersection exists.
 */
 
-int
-intersect_cubic_bezier_curve(float *y, control_point p[], float x)
+
+/*
+ * get x_value for certain u
+ */
+float get_x_value(float *x_u, float *y_u, control_point p[], float u)
 {
-    return 0;
+    evaluate_bezier_curve(x_u, y_u, p, 4, u);
+    return *x_u;
 }
 
+/* 
+ * recursively choose new u until intersection with x is found
+ */
+float find_u_intersect(float * x_u, float * y, float margin, control_point p[], 
+                        float min, float max, float x, int trials)
+{
+    if (trials != 0)
+    {
+        // find point between min and max
+        float u_1 = (min + max)/2.0;
+        
+        // get x-value of Bezier curve for this point
+        float x_1 = get_x_value(x_u, y, p, u_1);
+        
+        // compare with x, if within margin: return u_1
+        if (fabsf(x - x_1) < margin) 
+        {   
+            return u_1;
+        }
+        else
+        {
+            // get x-value of Bezier curve for left point
+            float x_min = get_x_value(x_u, y, p, min);
+            
+            // check if we should continue with interval right or left of u_1
+            float diff_0 = x_min - x;
+            float diff_1 = x_1 - x;
+            if ( (diff_0 * diff_1) <= 0 )
+            {
+                // interval left of u_1: run with u_1 as new max
+                return find_u_intersect(x_u, y, margin, p, min, u_1, x, trials-1);
+            }
+            else 
+            {
+                // interval right of u_1: run with u_1 as new min
+                return find_u_intersect(x_u, y, margin, p, u_1, max, x, trials-1);
+            } 
+        }
+    }
+    return -1.0;
+}    
+
+
+/*
+ * Find the intersection of the Bezier curve and time
+ */
+int
+intersect_cubic_bezier_curve(float *y, control_point p[], float x)
+{   
+    // create and initialize pointer for x_values
+    float x_u = 0.0;
+    
+    // choose margin and number of trials
+    float margin = 0.001;
+    int trials = 100;
+    
+    // get initial min and max
+    float min = 0.0;
+    float max = 1.0;
+    
+    // converge to correct value, return signal value -1 if there is none
+    float u_1 = find_u_intersect(&x_u, y, margin, p, min, max, x, trials);
+    
+    if (u_1 != -1.0)
+    {
+        // *y has already been set to correct value by find_u_intersect()
+        
+        // intersection was found: return 1 
+        return 1;
+    }
+    
+    // intersection was not found: return 0
+    return 0;
+}

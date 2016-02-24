@@ -194,27 +194,20 @@ ray_trace(void)
         for (i = 0; i < framebuffer_width; i++)
         {
             // compute u and v
-            int u = -image_plane_width/2.0 + image_plane_width * (i + 0.5)/framebuffer_width;
-            int v = -image_plane_height/2.0 + image_plane_height * (j + 0.5)/framebuffer_height;
+            int u = image_plane_width * (((i + 0.5)/(float)framebuffer_width) - 0.5);
+            int v = -image_plane_height * (((j + 0.5)/(float)framebuffer_height) - 0.5);
             
-/*            // compute ray direction (perspective)*/
-/*            vec3 ray_direction = {-forward_vector.x + u * right_vector.x + v * up_vector.x, */
-/*                                  -forward_vector.y + u * right_vector.y + v * up_vector.y,*/
-/*                                  -forward_vector.z + u * right_vector.z + v * up_vector.z};*/
-/*                                  */
-/*            // compute ray origin (perspective)*/
-/*            vec3 ray_origin = scene_camera_position;*/
-            
-            // compute ray direction (orthographic)
-            vec3 ray_direction = forward_vector;
+            // compute ray direction (perspective)
+/*            vec3 ray_direction = {forward_vector.x + u * right_vector.x + v * up_vector.x, */
+/*                                  forward_vector.y + u * right_vector.y + v * up_vector.y,*/
+/*                                  forward_vector.z + u * right_vector.z + v * up_vector.z};*/
+            vec3 pixel_vector = v3_add(v3_multiply(right_vector, u), v3_multiply(up_vector, v));                   
+            vec3 ray_direction = v3_add(forward_vector, pixel_vector);
                                   
-            // compute ray origin (orthographic)
-            vec3 ray_origin = {scene_camera_position.x + u * right_vector.x + v * up_vector.x, 
-                               scene_camera_position.y + u * right_vector.y + v * up_vector.y,
-                               scene_camera_position.z + u * right_vector.z + v * up_vector.z};
+            ray_direction = v3_normalize(ray_direction);
             
             // Save shade in color-vector
-            color = ray_color(0, ray_origin, ray_direction);
+            color = ray_color(0, scene_camera_position, ray_direction);
             
             // Output pixel color
             put_pixel(i, j, color.x, color.y, color.z);

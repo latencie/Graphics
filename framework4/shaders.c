@@ -36,7 +36,25 @@ shade_constant(intersection_point ip)
 vec3
 shade_matte(intersection_point ip)
 {
-    return v3_create(1, 0, 0);
+    float total_intensity = 0;
+    float inproduct;
+    vec3 light_vector = v3_create(0, 0, 0);
+    
+    // for each light source, calculate inproduct light source and normal ip.n
+    for (int j = 0; j < scene_num_lights; j ++)
+    {
+        light_vector = v3_normalize(v3_subtract(scene_lights[j].position, ip.p));
+        inproduct = v3_dotprod(ip.n, light_vector);
+        if (inproduct > 0)
+        {
+            total_intensity += inproduct * scene_lights[j].intensity;
+        }
+    } 
+    
+    vec3 shade = v3_create(1, 1, 1); 
+    shade = v3_multiply(shade, total_intensity);
+    
+    return shade;
 }
 
 vec3

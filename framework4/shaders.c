@@ -38,16 +38,22 @@ shade_matte(intersection_point ip)
 {
     float total_intensity = 0;
     float inproduct;
-    vec3 light_vector = v3_create(0, 0, 0);
+    vec3 light_vector, off_set_vector;
     
     // for each light source, calculate inproduct light source and normal ip.n
     for (int j = 0; j < scene_num_lights; j ++)
     {
         light_vector = v3_normalize(v3_subtract(scene_lights[j].position, ip.p));
         inproduct = v3_dotprod(ip.n, light_vector);
+
+        //This vector determines the offset for the point to shade
+        off_set_vector = v3_add(v3_multiply(ip.n, 0.0001), ip.p);
+
         if (inproduct > 0)
         {
-            total_intensity += inproduct * scene_lights[j].intensity;
+            if(!shadow_check(off_set_vector, scene_lights[j].position)) {
+                total_intensity += inproduct * scene_lights[j].intensity;
+            }
         }
     } 
     

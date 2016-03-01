@@ -66,7 +66,43 @@ shade_matte(intersection_point ip)
 vec3
 shade_blinn_phong(intersection_point ip)
 {
-    return v3_create(1, 0, 0);
+    float k_d = 0.8;
+    float k_s = 0.5;
+    float total_intensity = 0.0;
+    float phong = 0.0;
+    float inproduct;
+    int alfa = 50;
+    vec3 c_d = v3_create(1, 0, 0);
+    vec3 c_s = v3_create(1, 1, 1);
+    vec3 c_f, off_set_vector, light_vector;
+
+    for(int i = 0; i < scene_num_lights; i++) {
+        //Calculate the light direction vector
+        light_vector = v3_normalize(v3_subtract(scene_lights[i].position, ip.p));
+
+        //Calculate the offset vector for the shade
+        off_set_vector = v3_add(v3_multiply(ip.n, 0.0001), ip.p);
+
+        //check for negative dot product 
+        inproduct = v3_dotprod(ip.n, light_vector);
+
+        if(inproduct > 0) {
+            //Do the shadow ray tracing check
+            if(!shadow_check(off_set_vector, scene_lights[i].position)) {
+                total_intensity += inproduct * scene_lights[i].intensity;
+            }
+        }
+
+        //Now we calculate the half way vector h
+        vec3 h = v3_normalize(v3_add(ip.i, light_vector));
+
+        //calculate the phong component
+        phong += pow(v3_dotprod(ip.n, h), alfa) * scene_lights[i].intensity;
+    }
+
+    c_f = v3_add(v3_multiply(c_d, scene_ambient_light + k_d * total_intensity), v3_multiply(c_s, k_s * phong));
+    
+    return c_f;
 }
 
 vec3

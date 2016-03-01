@@ -77,18 +77,19 @@ shade_blinn_phong(intersection_point ip)
     vec3 c_f, off_set_vector, light_vector;
 
     for(int i = 0; i < scene_num_lights; i++) {
-        //Calculate the light direction vector
-        light_vector = v3_normalize(v3_subtract(scene_lights[i].position, ip.p));
-
-        //Calculate the offset vector for the shade
+        
+        //Calculate the offset vector for the shade check
         off_set_vector = v3_add(v3_multiply(ip.n, 0.0001), ip.p);
 
-        //check for negative dot product 
-        inproduct = v3_dotprod(ip.n, light_vector);
+        //Do the shadow ray tracing check early to prevent unnessecary calculations
+        if(!shadow_check(off_set_vector, scene_lights[i].position)) {
+            //Calculate the light direction vector
+            light_vector = v3_normalize(v3_subtract(scene_lights[i].position, ip.p));
 
-        if(inproduct > 0) {
-            //Do the shadow ray tracing check
-            if(!shadow_check(off_set_vector, scene_lights[i].position)) {
+            //check for negative dot product 
+            inproduct = v3_dotprod(ip.n, light_vector);
+
+            if(inproduct > 0) {            
                 total_intensity += inproduct * scene_lights[i].intensity;
             }
         }

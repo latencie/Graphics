@@ -109,56 +109,28 @@ shade_blinn_phong(intersection_point ip)
 
 
 vec3
-get_reflected_colour(int level, vec3 lightvector, vec3 position, vec3 normal)
-{
-    // calculate in which direction light is reflected
-    float inproduct = v3_dotprod(lightvector, normal);
-    vec3 reflect_vector = v3_subtract(v3_multiply(normal, 2*inproduct), lightvector);
-    
-    // return reflected colour
-    return ray_color(level+1, position, reflect_vector);
-}
-
-
-vec3
 shade_reflection(intersection_point ip)
 {
     float shade_factor = 0.75;
     float reflect_factor = 0.25;
-    vec3 shade, light_vector, reflect_shade = v3_create(0, 0, 0);
-    float inproduct;
+    vec3 matte_shading, direction_r, r_color, off_set_vector;
     
-    // calculate 75% matte reflection at this intersection point
-    shade = v3_multiply(shade_matte(ip), shade_factor);
+    //Calculate 75% matte reflection at this intersection point
+    matte_shading = v3_multiply(shade_matte(ip), shade_factor);
 
-    // if ray_level is 0, this is a camera ray
-    if (ip.ray_level == 0)
-    {
-        // for each light source, calculate reflection from other surface
-        for (int j = 0; j < scene_num_lights; j ++)
-        {
-            // check if light source reaches surface
-            light_vector = v3_normalize(v3_subtract(scene_lights[j].position, ip.p));
-            inproduct = v3_dotprod(light_vector, ip.n);
+    //Calculate r
+    direction_r = v3_subtract((v3_multiply(v3_multiply(ip.n, 2), v3_dotprod(ip.i, ip.n))), ip.i);
 
-            if (inproduct > 0)
-            {
-                // find reflected colour, add to total
-                reflect_shade = v3_add(reflect_shade, get_reflected_colour(ip.ray_level, light_vector, ip.p, ip.n));
-            }
-        }
-    }
+    //Offset for position of reflection
+    off_set_vector = v3_add(v3_multiply(direction_r, 0.0001), ip.p);
+
+    //Get the reflected color
+    r_color = ray_color(ip.ray_level + 1, off_set_vector, direction_r);
+
+    //Calculate 25% of the r_color
+    r_color = v3_multiply(r_color, reflect_factor);
     
-    // if ray_level is higher than 0, this is a reflected light ray
-    else
-    {   
-        // only this reflected ray can cause another reflection
-        // TODO is ip.i already a normalized direction vector?
-        light_vector = v3_normalize(v3_subtract(ip.i, ip.p));
-        reflect_shade = get_reflected_colour(ip.ray_level, light_vector, ip.p, ip.n);
-    }
-    
-    return v3_add(shade, v3_multiply(v3_normalize(reflect_shade), reflect_factor));;
+    return v3_add(matte_shading, r_color);
 }
 
 

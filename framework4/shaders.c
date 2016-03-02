@@ -46,7 +46,7 @@ shade_matte(intersection_point ip)
         light_vector = v3_normalize(v3_subtract(scene_lights[j].position, ip.p));
         inproduct = v3_dotprod(ip.n, light_vector);
 
-        //This vector determines the offset for the point to shade
+        // this vector determines the offset for the point to shade
         off_set_vector = v3_add(v3_multiply(ip.n, 0.0001), ip.p);
 
         if (inproduct > 0)
@@ -78,15 +78,16 @@ shade_blinn_phong(intersection_point ip)
 
     for(int i = 0; i < scene_num_lights; i++) {
         
-        //Calculate the offset vector for the shade check
+        // calculate the offset vector for the shade check
         off_set_vector = v3_add(v3_multiply(ip.n, 0.0001), ip.p);
 
-        //Do the shadow ray tracing check early to prevent unnessecary calculations
+        // do the shadow ray tracing check early to prevent unnecessary calculations
         if(!shadow_check(off_set_vector, scene_lights[i].position)) {
-            //Calculate the light direction vector
+        
+            // calculate the light direction vector
             light_vector = v3_normalize(v3_subtract(scene_lights[i].position, ip.p));
 
-            //check for negative dot product 
+            // check for negative dot product 
             inproduct = v3_dotprod(ip.n, light_vector);
 
             if(inproduct > 0) {            
@@ -94,10 +95,10 @@ shade_blinn_phong(intersection_point ip)
             }
         }
 
-        //Now we calculate the half way vector h
+        // calculate the half way vector h
         vec3 h = v3_normalize(v3_add(ip.i, light_vector));
 
-        //calculate the phong component
+        // calculate the phong component
         phong += pow(v3_dotprod(ip.n, h), alfa) * scene_lights[i].intensity;
     }
 
@@ -106,11 +107,64 @@ shade_blinn_phong(intersection_point ip)
     return c_f;
 }
 
+
+vec3
+get_reflected_colour(int level, vec3 lightvector, vec3 position, vec3 normal)
+{
+    // calculate in which direction light is reflected
+    float inproduct = v3_dotprod(lightvector, normal);
+    vec3 reflect_vector = v3_subtract(v3_multiply(normal, 2*inproduct), lightvector);
+    
+    // return reflected colour
+    return ray_color(level+1, position, reflect_vector);
+}
+
+
 vec3
 shade_reflection(intersection_point ip)
 {
-    return v3_create(1, 0, 0);
+    vec3 shade, light_vector, reflect_shade = v3_create(0, 0, 0);
+    float inproduct;
+    
+    // if ray_level is 0, this is a camera ray
+    if (ip.ray_level == 0)
+    {
+        // calculate 75% matte reflection at this intersection point
+        shade = v3_multiply(shade_matte(ip), 0.75);
+        
+        // for each light source, calculate reflection from other surface
+        for (int j = 0; j < scene_num_lights; j ++)
+        {
+            // check if light source reaches surface
+            light_vector = v3_normalize(v3_subtract(scene_lights[j].position, ip.p));
+            inproduct = v3_dotprod(light_vector, ip.n);
+
+            if (inproduct > 0)
+            {
+                // find reflected colour, add to total
+                reflect_shade = v3_add(reflect_shade, get_reflected_colour(ip.ray_level, light_vector, ip.p, ip.n));
+            }
+        }
+        shade = v3_add(shade, v3_multiply(v3_normalize(reflect_shade), 0.25));
+    }
+    
+    // if ray_level is higher than 0, this is a reflected light ray
+    else
+    {
+        // colour is ray_colour from source to ip
+        //shade = ray_color(ip.ray_level, ip.i, ip.p);
+        
+        // reflect light further
+        light_vector = v3_normalize(v3_subtract(ip.i, ip.p));
+        reflect_shade = get_reflected_colour(ip.ray_level, light_vector, ip.p, ip.n);
+                        
+/*        shade = v3_add(shade, v3_normalize(reflect_shade));*/
+        shade = v3_normalize(reflect_shade);
+    }
+    
+    return shade;
 }
+
 
 // Returns the shaded color for the given point to shade.
 // Calls the relevant shading function based on the material index.

@@ -123,15 +123,17 @@ get_reflected_colour(int level, vec3 lightvector, vec3 position, vec3 normal)
 vec3
 shade_reflection(intersection_point ip)
 {
+    float shade_factor = 0.75;
+    float reflect_factor = 0.25;
     vec3 shade, light_vector, reflect_shade = v3_create(0, 0, 0);
     float inproduct;
     
+    // calculate 75% matte reflection at this intersection point
+    shade = v3_multiply(shade_matte(ip), shade_factor);
+
     // if ray_level is 0, this is a camera ray
     if (ip.ray_level == 0)
     {
-        // calculate 75% matte reflection at this intersection point
-        shade = v3_multiply(shade_matte(ip), 0.75);
-        
         // for each light source, calculate reflection from other surface
         for (int j = 0; j < scene_num_lights; j ++)
         {
@@ -145,24 +147,18 @@ shade_reflection(intersection_point ip)
                 reflect_shade = v3_add(reflect_shade, get_reflected_colour(ip.ray_level, light_vector, ip.p, ip.n));
             }
         }
-        shade = v3_add(shade, v3_multiply(v3_normalize(reflect_shade), 0.25));
     }
     
     // if ray_level is higher than 0, this is a reflected light ray
     else
-    {
-        // colour is ray_colour from source to ip
-        //shade = ray_color(ip.ray_level, ip.i, ip.p);
-        
-        // reflect light further
+    {   
+        // only this reflected ray can cause another reflection
+        // TODO is ip.i already a normalized direction vector?
         light_vector = v3_normalize(v3_subtract(ip.i, ip.p));
         reflect_shade = get_reflected_colour(ip.ray_level, light_vector, ip.p, ip.n);
-                        
-/*        shade = v3_add(shade, v3_normalize(reflect_shade));*/
-        shade = v3_normalize(reflect_shade);
     }
     
-    return shade;
+    return v3_add(shade, v3_multiply(v3_normalize(reflect_shade), reflect_factor));;
 }
 
 

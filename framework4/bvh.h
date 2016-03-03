@@ -15,7 +15,7 @@ int use_bvh;
 //
 
 // We can't create a typedef bvh_node, as a _bvh_node contains
-// pointers to _bvh_node's (its children)
+// pointers to _bvh_nodes (its children)
 
 #define bvh_node    struct _bvh_node
 

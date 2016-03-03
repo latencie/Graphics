@@ -193,21 +193,34 @@ ray_trace(void)
     {
         for (i = 0; i < framebuffer_width; i++)
         {
-            // compute u and v
-            float u = image_plane_width * (((i + 0.5)/(float)framebuffer_width) - 0.5);
-            float v = -image_plane_height * (((j + 0.5)/(float)framebuffer_height) - 0.5);
-            
-            // compute ray direction
-            vec3 pixel_vector = v3_add(v3_multiply(right_vector, u), v3_multiply(up_vector, v));                   
-            vec3 ray_direction = v3_add(forward_vector, pixel_vector);
-                                  
-            ray_direction = v3_normalize(ray_direction);
-            
-            // Save shade in color-vector
-            color = ray_color(0, scene_camera_position, ray_direction);
-            
-            // Output pixel color
-            put_pixel(i, j, color.x, color.y, color.z);
+            if(do_antialiasing) {
+                for(int x_i = 1; x_i < 4; x_i+=2) {
+                    for(int y_i = 1; y_i < 4; y_i+=2) {
+                        //hier moeten we in plaatse van het midden van een pixel de 4 nieuwe puntent in 1 pixel vinden
+                        //en daar de kleur van berekenen
+                    }
+                }
+                color = v3_multiply(color, 0.25);
+                put_pixel(i, j, color.x, color.y, color.z);
+            } 
+
+            else {
+                // compute u and v
+                float u = image_plane_width * (((i + 0.5)/(float)framebuffer_width) - 0.5);
+                float v = -image_plane_height * (((j + 0.5)/(float)framebuffer_height) - 0.5);
+                
+                // compute ray direction
+                vec3 pixel_vector = v3_add(v3_multiply(right_vector, u), v3_multiply(up_vector, v));                   
+                vec3 ray_direction = v3_add(forward_vector, pixel_vector);
+                                      
+                ray_direction = v3_normalize(ray_direction);
+                
+                // Save shade in color-vector
+                color = ray_color(0, scene_camera_position, ray_direction);
+                
+                // Output pixel color
+                put_pixel(i, j, color.x, color.y, color.z);
+            }  
         }
 
         sprintf(buf, "Ray-tracing ::: %.0f%% done", 100.0*j/framebuffer_height);

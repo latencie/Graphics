@@ -1,10 +1,10 @@
 /* Computer Graphics and Game Technology, Assignment Ray-tracing
  *
- * Student name ....
- * Student email ...
- * Collegekaart ....
- * Date ............
- * Comments ........
+ * Student name Gracia Redder & Lars Lokhoff
+ * Student email graciamichelle@gmail.com
+ * Collegekaart 0478660 & 10606165
+ * Date 04-03-2016
+ * 
  *
  *  
  * (always fill in these fields before submitting!!)
@@ -182,8 +182,10 @@ int find_intersection(float t0, float t1,
         int number_of_triangles = leaf_node_num_triangles(current);
         intersection_point new_intersection_point;
 
+        //go past all triangles and check for intersection
         for(int i = 0; i < number_of_triangles; i++){
             if(ray_intersects_triangle(&new_intersection_point, triangles[i], ray_origin, ray_direction)) {
+                
                 // check if this triangle is closer than the last one
                 if(ip->t > new_intersection_point.t) {
                     *ip = new_intersection_point;
@@ -236,20 +238,20 @@ int find_intersection(float t0, float t1,
 // will be the one closest to the ray origin.
 //
 // Returns 0 if there are no intersections
-
 static int
 find_first_intersected_bvh_triangle(intersection_point* ip,
     vec3 ray_origin, vec3 ray_direction) {
     float t_min, t_max;
     float t0 = 0.0;
     float t1 = C_INFINITY;
+    bvh_node *current  = bvh_root;
 
     //set ip t to infinity for our traingle check later
     ip->t = C_INFINITY;
 
     //check if the ray goes through the first box
-    if(bbox_intersect(&t_min, &t_max, bvh_root -> bbox, ray_origin, ray_direction, t0, t1)) {
-        return find_intersection(t_min, t_max, bvh_root, ip, ray_origin ,ray_direction);
+    if(bbox_intersect(&t_min, &t_max, current -> bbox, ray_origin, ray_direction, t0, t1)) {
+        return find_intersection(t_min, t_max, current, ip, ray_origin ,ray_direction);
     }
 
     return 0;

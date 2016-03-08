@@ -321,20 +321,8 @@ DrawPolylist(polys * list)
             glNormal3f(p.normal[j].x, p.normal[j].y, p.normal[j].z);
             
             // set correct texture coordinates to vertex j
-            switch (j) 
-            {
-                case 0: 
-                    glTexCoord2f(0.0, 0.0);
-                    break;
-                case 1: 
-                    glTexCoord2f(0.0, p.tcoord[j].y + 1.0);
-                    break;
-                case 2: 
-                    glTexCoord2f(p.tcoord[j].x + 1.0, p.tcoord[j].y + 1.0);
-                    break;
-                default: glTexCoord2f(p.tcoord[j].x + 1.0, 0.0);
-            }
-
+            glTexCoord2f(p.tcoord[j].x, p.tcoord[j].y);
+            
             glVertex3f(p.pts[j].x, p.pts[j].y, p.pts[j].z);
         }
         glEnd();

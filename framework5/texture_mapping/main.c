@@ -312,21 +312,18 @@ DrawPolylist(polys * list)
         glBegin(GL_POLYGON);
         for (j = 0; j < p.points; j++)
         {
-            if(j == 0) {
-                glTexCoord2f(0.0, 0.0);
-
-            }
-
-            else if(j == 1) {
-                glTexCoord2f(0.0, 1.0);
-            }
-
-            else if(j == 2) {
-                glTexCoord2f(4.0, 1.0);
-            }
-
-            else {
-                glTexCoord2f(4.0, 0.0);
+            switch (j) 
+            {
+                case 0: 
+                    glTexCoord2f(0.0, 0.0);
+                    break;
+                case 1: 
+                    glTexCoord2f(0.0, 1.0);
+                    break;
+                case 2: 
+                    glTexCoord2f(1.0, 1.0);
+                    break;
+                default: glTexCoord2f(1.0, 0.0);
             }
 
             glNormal3f(p.normal[j].x, p.normal[j].y, p.normal[j].z);

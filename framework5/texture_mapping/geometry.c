@@ -145,6 +145,16 @@ createHemisphere(polys * list, double s, double ox, double oy, double oz,
             setHemispherePoint(&(p.pts[3]), &(p.normal[3]), &(p.tcoord[3]),
                 latitude+10, longitude, s, ox, oy, oz);
 
+            // Set texture coordinates
+            p.tcoord[0].x = (float)longitude/360;
+            p.tcoord[0].y = (float)latitude/90;
+            p.tcoord[1].x = (float)(longitude+10)/360;
+            p.tcoord[1].y = (float)latitude/90;
+            p.tcoord[2].x = (float)(longitude+10)/360;
+            p.tcoord[2].y = (float)(latitude+10)/90;
+            p.tcoord[3].x = (float)longitude/360;
+            p.tcoord[3].y = (float)(latitude+10)/90;
+            
             AddPolyToPolylist(list, p);
         }
     }
@@ -197,8 +207,23 @@ createCylinder(polys * list, double radius, double height,
             p.normal[i].x /= len;
             p.normal[i].z /= len;
 
-            // Set texture coordinate
-            p.tcoord[i].x = p.tcoord[i].y = 0.0;
+            // Set texture coordinates
+            switch (i) 
+            {
+                case 0: p.tcoord[i].x = 0.0;
+                        p.tcoord[i].y = 0.0;
+                        break;
+                case 1: p.tcoord[i].x = 0.0;
+                        p.tcoord[i].y = 1.0;
+                        break;
+                case 2: p.tcoord[i].x = 1.0;
+                        p.tcoord[i].y = 1.0;
+                        break;
+                default: p.tcoord[i].x = 1.0;
+                        p.tcoord[i].y = 0.0;
+                        break;
+            }
+
         }
 
         AddPolyToPolylist(list, p);

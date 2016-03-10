@@ -300,36 +300,29 @@ DrawPolylist(polys * list)
 {
     int i, j;
 
+    // iterate over polygons
     for (i = 0; i < list->length; i++)
     {
+        // set p to current polygon
         poly p = list->items[i];
 
+        // get color polygon
         glColor3f(p.color[0], p.color[1], p.color[2]);
 
         // Make the correct texture active
         glBindTexture(GL_TEXTURE_2D, p.texture_id);
 
         glBegin(GL_POLYGON);
+        
+        // iterate over vertices
         for (j = 0; j < p.points; j++)
         {
-            if(j == 0) {
-                glTexCoord2f(0.0, 0.0);
-
-            }
-
-            else if(j == 1) {
-                glTexCoord2f(0.0, 1.0);
-            }
-
-            else if(j == 2) {
-                glTexCoord2f(4.0, 1.0);
-            }
-
-            else {
-                glTexCoord2f(4.0, 0.0);
-            }
-
+            // set normal to normal of vertex j
             glNormal3f(p.normal[j].x, p.normal[j].y, p.normal[j].z);
+            
+            // set correct texture coordinates to vertex j
+            glTexCoord2f(p.tcoord[j].x, p.tcoord[j].y);
+            
             glVertex3f(p.pts[j].x, p.pts[j].y, p.pts[j].z);
         }
         glEnd();

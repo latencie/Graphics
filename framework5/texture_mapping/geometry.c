@@ -160,6 +160,49 @@ createHemisphere(polys * list, double s, double ox, double oy, double oz,
     }
 }
 
+void
+createTreeHemisphere(polys * list, double s, double ox, double oy, double oz,
+    double r, double g, double b)
+{
+    int     latitude, longitude;
+    poly    p;
+
+    // prepare poly, as these values are the same for all generated polys
+    p.points = 4;
+    p.color[0] = r;
+    p.color[1] = g;
+    p.color[2] = b;
+    p.color[3] = 0;
+
+    // for each leaf, go over latitude to depict part of leaf
+    for (latitude = 0; latitude < 90; latitude += 10)
+    {
+        for (longitude = 0; longitude < 360; longitude += 36)
+        {
+            setHemispherePoint(&(p.pts[0]), &(p.normal[0]), &(p.tcoord[0]),
+                latitude, longitude, s, ox, oy, oz);
+            setHemispherePoint(&(p.pts[1]), &(p.normal[1]), &(p.tcoord[1]),
+                latitude, longitude+30, s, ox, oy, oz);
+            setHemispherePoint(&(p.pts[2]), &(p.normal[2]), &(p.tcoord[2]),
+                latitude+10, longitude+30, s, ox, oy, oz);
+            setHemispherePoint(&(p.pts[3]), &(p.normal[3]), &(p.tcoord[3]),
+                latitude+10, longitude, s, ox, oy, oz);
+
+            // Set texture coordinates
+            p.tcoord[0].x = 1.0;
+            p.tcoord[0].y = 1.0 -(float)latitude/90;
+            p.tcoord[1].x = 0.0;
+            p.tcoord[1].y = 1.0 -(float)latitude/90;
+            p.tcoord[2].x = 0.0;
+            p.tcoord[2].y = 1.0 -(float)(latitude+10)/90;
+            p.tcoord[3].x = 1.0;
+            p.tcoord[3].y = 1.0 -(float)(latitude+10)/90;
+            
+            AddPolyToPolylist(list, p);
+        }
+    }
+}
+
 // Create a cylinder along the Y axis whose base center point is
 // at (ox, oy, oz), having the given radius and height.
 // Use the given color for the generated polygons.

@@ -212,9 +212,9 @@ createCylinder(polys * list, double radius, double height,
         p.tcoord[0].x = (float)longitude/360;
         p.tcoord[0].y = 0.0;
         p.tcoord[1].x = (float)longitude/360;
-        p.tcoord[1].y = 1.0;
+        p.tcoord[1].y = height;
         p.tcoord[2].x = (float)(longitude+10)/360;
-        p.tcoord[2].y = 1.0;
+        p.tcoord[2].y = height;
         p.tcoord[3].x = (float)(longitude+10)/360;
         p.tcoord[3].y = 0.0;
 

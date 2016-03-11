@@ -41,6 +41,9 @@ interpolate_points(unsigned char isovalue, vec3 p1, vec3 p2, unsigned char v1, u
 static int
 generate_tetrahedron_triangles(triangle *triangles, unsigned char isovalue, cell c, int v0, int v1, int v2, int v3)
 {
+    // TODO store triangles in triangles-pointer
+
+    // TODO return number of triangles
     return 0;
 }
 
@@ -56,5 +59,54 @@ generate_tetrahedron_triangles(triangle *triangles, unsigned char isovalue, cell
 int
 generate_cell_triangles(triangle *triangles, cell c, unsigned char isovalue)
 {
-    return 0;
+    int num_tri = 0;
+    
+    // get cell vertex combinations that form tetrahedrons
+    vec3 *tetrahedrons = malloc(24* sizeof(vec3));
+    tetrahedrons[0] = c.p[0];
+    tetrahedrons[1] = c.p[1];
+    tetrahedrons[2] = c.p[3];
+    tetrahedrons[3] = c.p[7];
+    
+    tetrahedrons[4] = c.p[0];
+    tetrahedrons[5] = c.p[7];
+    tetrahedrons[6] = c.p[6];
+    tetrahedrons[7] = c.p[2];
+    
+    tetrahedrons[8] = c.p[0];
+    tetrahedrons[9] = c.p[1];
+    tetrahedrons[10] = c.p[7];
+    tetrahedrons[11] = c.p[5];
+    
+    tetrahedrons[12] = c.p[0];
+    tetrahedrons[13] = c.p[4];
+    tetrahedrons[14] = c.p[5];
+    tetrahedrons[15] = c.p[7];
+    
+    tetrahedrons[16] = c.p[0];
+    tetrahedrons[17] = c.p[3];
+    tetrahedrons[18] = c.p[7];
+    tetrahedrons[19] = c.p[2];
+    
+    tetrahedrons[20] = c.p[0];
+    tetrahedrons[21] = c.p[7];
+    tetrahedrons[22] = c.p[6];
+    tetrahedrons[23] = c.p[4];
+    
+    // for each tetrahedron in the cell, generate the appropriate triangles
+    for (int i = 0; i < 24; i+=4)
+    {
+        // get B values
+        double v0 = (c.value[tetrahedrons[i]] > isovalue);
+        double v1 = (c.value[tetrahedrons[i+1]] > isovalue);
+        double v2 = (c.value[tetrahedrons[i+2]] > isovalue);
+        double v3 = (c.value[tetrahedrons[i+3]] > isovalue);
+        
+        // store triangles at pointer, get number of triangles for count
+        num_tri += generate_tetrahedron_triangles(triangles, isovalue, c, v0, v1, v2, v3);
+    }
+    
+    // free mallocs, return number of triangles
+    free(tetrahedrons);
+    return num_tri;
 }

@@ -225,14 +225,13 @@ void DrawVolumeAsIsosurface(void)
 void FillArrayWithIsosurface(void)
 {
     int x, y, z, temp_tri, l ,num_tri = 0;
-    
+    triangle triangles[1024];
 
     //iterate over all the cubes
     for(z = 0; z < nz; z++) {
         for(y = 0; y < ny; y++) {
             for(x = 0; x < nx; x++) {
                 cell c;
-                triangle *triangles = malloc(6*2*sizeof(triangle));
                 c = get_cell(x, y, z);
                 temp_tri = generate_cell_triangles(triangles, c, isovalue);
 
@@ -247,7 +246,7 @@ void FillArrayWithIsosurface(void)
         }
     }
 
-    printf("Triangles drawn: %sd\n", num_tri);
+    printf("Triangles drawn: %d\n", num_tri);
 }
 
 void DrawScene(void)

@@ -21,27 +21,7 @@
 static vec3
 interpolate_points(unsigned char isovalue, vec3 p1, vec3 p2, unsigned char v1, unsigned char v2)
 {
-    //check which value is bigger
-    if(v1 > v2) {
-
-        //subtract biggest from smallest and get new isovalue
-        v1 -= v2;
-        isovalue -= v2;
-
-        //get correction
-        float p = isovalue / (float)v1;
-
-        //use correction on the right side
-        return v3_add(v3_multiply(p1, 1 - p), v3_multiply(p2, p));
-    }
-
-    else {
-        v2 -= v1;
-        isovalue -= v1;
-        float p = isovalue / (float)v2;
-
-        return v3_add(v3_multiply(p1, p), v3_multiply(p2, 1 - p));  
-    }
+    return v3_add(v3_multiply(p1, 0.5), v3_multiply(p2, 0.5));
 }
 
 /* Using the given iso-value generate triangles for the tetrahedron
@@ -60,6 +40,7 @@ generate_tetrahedron_triangles(triangle *triangles, unsigned char isovalue, cell
 {
     int b1 =0, b2 =0, b3 =0, b4 = 0;
 
+    //check what values B are
     if(c.value[v0] > isovalue)
         b1 = 1;
 

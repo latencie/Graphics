@@ -15,6 +15,12 @@ void
 createHemisphere(polys * list, double s, double ox, double oy, double oz,
     double r, double g, double b);
 
+// Create a tree hemisphere whose base point is at (ox, oy, oz), having radius s.
+// Use the given color.
+void
+createTreeHemisphere(polys * list, double s, double ox, double oy, double oz,
+    double r, double g, double b);
+
 // Create a cylinder along the Y axis whose base center point is
 // at (ox, oy, oz), having the given radius and height.
 // Use the given color for the generated polygons.

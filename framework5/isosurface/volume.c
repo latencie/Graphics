@@ -1,10 +1,9 @@
 /* Computer Graphics, Assignment, Volume rendering with cubes/points/isosurface
  *
- * Student name ....
- * Student email ...
- * Collegekaart ....
- * Date ............
- * Comments ........
+ * Student name Gracia Redder & Lars Lokhoff
+ * Student email graciamichelle@gmail.com
+ * Collegekaart 0478660 & 10606165
+ * Date 11 - 03 - 2016
  *
  * (always fill in these fields before submitting!!)
  */
@@ -38,6 +37,22 @@ cell
 get_cell(int i, int j, int k)
 {
     cell c;
+    
+    // define datapoints
+    c.p[0] = v3_create(i, j, k);
+    c.p[1] = v3_create(i+1, j, k);
+    c.p[2] = v3_create(i, j+1, k);
+    c.p[3] = v3_create(i+1, j+1, k);
+    c.p[4] = v3_create(i, j, k+1);
+    c.p[5] = v3_create(i+1, j, k+1);
+    c.p[6] = v3_create(i, j+1, k+1);
+    c.p[7] = v3_create(i+1, j+1, k+1);
+    
+    // fill cell value array with correct values from volume array
+    for (int l = 0; l < 8; l++)
+    {
+        c.value[l] = volume[voxel2idx(c.p[l].x, c.p[l].y, c.p[l].z)];
+    }
     return c;
 }
 

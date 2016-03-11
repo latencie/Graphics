@@ -5,11 +5,10 @@
  * Date ............ 29.10.2007
  * Created by ...... Paul Melis
  *
- * Student name ....
- * Student email ...
- * Collegekaart ....
- * Date ............
- * Comments ........
+ * Student name Gracia Redder & Lars Lokhoff
+ * Student email graciamichelle@gmail.com
+ * Collegekaart 0478660 & 10606165
+ * Date 11 - 03 - 2016
  *
  * (always fill in these fields before submitting!!)
  */
@@ -225,6 +224,30 @@ void DrawVolumeAsIsosurface(void)
 
 void FillArrayWithIsosurface(void)
 {
+    int x, y, z, temp_tri, l ,num_tri = 0;
+    
+
+    //iterate over all the cubes
+    for(z = 0; z < nz; z++) {
+        for(y = 0; y < ny; y++) {
+            for(x = 0; x < nx; x++) {
+                cell c;
+                triangle *triangles = malloc(6*2*sizeof(triangle));
+                c = get_cell(x, y, z);
+                temp_tri = generate_cell_triangles(triangles, c, isovalue);
+
+                num_tri += temp_tri;
+
+                for(l = 0; l < temp_tri; l++) {
+                    AddVertexToArray(triangles[l].p[0], triangles[l].n[0]);
+                    AddVertexToArray(triangles[l].p[1], triangles[l].n[1]);
+                    AddVertexToArray(triangles[l].p[2], triangles[l].n[2]);
+                }
+            }
+        }
+    }
+
+    printf("Triangles drawn: %sd\n", num_tri);
 }
 
 void DrawScene(void)

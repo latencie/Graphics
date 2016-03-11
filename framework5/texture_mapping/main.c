@@ -4,11 +4,10 @@
  * Description ..... Creates OpenGL window and draws the scene.
  * Created by ...... Paul Melis, Robert Belleman, Jurgen Sturm
  *
- * Student name ....
- * Student email ...
- * Collegekaart ....
- * Date ............
- * Comments ........
+ * Student name Gracia Redder & Lars Lokhoff
+ * Student email graciamichelle@gmail.com
+ * Collegekaart 0478660 & 10606165
+ * Date 11 - 03 - 2016
  *
  * (always fill in these fields before submitting!!)
  */
@@ -131,7 +130,7 @@ InitializePolygonlists(void)
     loadPolygonalObject(polylistHouse, "house.obj", texture_names, 1.0,
         object_positions[0].x, object_positions[0].y, object_positions[0].z);
 
-    // A single tree object
+    // A single leaf object
     polylistTreeLeafs = CreatePolylist(10);
     loadPolygonalObject(polylistTreeLeafs, "leaf.obj", texture_names, 1, 0.0, 1.8, 0.0);
 

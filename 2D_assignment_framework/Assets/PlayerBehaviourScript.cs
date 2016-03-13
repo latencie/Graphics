@@ -35,7 +35,6 @@ public class PlayerBehaviourScript : MonoBehaviour {
 
 		// if w, jump
 		if (Input.GetKey (KeyCode.W)) {
-			// getAxis()
 			translation = Input.GetAxis ("Vertical") * jumpfactor * speed;
 			translation *= Time.deltaTime;
 			transform.Translate (Vector3.up * translation);

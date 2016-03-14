@@ -58,7 +58,11 @@ public class PlayerBehaviourScript : MonoBehaviour {
 		// if space bar is pressed, shoot projectile
 		if (Input.GetKey(KeyCode.Space) && fired == false){
 			fired = true;
-			Vector2 position = new Vector2(transform.position.x + (direction - 1) * 0.5F, transform.position.y);
+			Vector2 position;
+			if (transform.rotation == new Quaternion(0.0F, 0.0F, 1.0F, 0.0F)){
+				position = new Vector2(transform.position.x + (direction + 1) * 0.5F, transform.position.y);
+			}
+			else {position = new Vector2(transform.position.x + (direction - 1) * 0.5F, transform.position.y);}
 			projectileInst = Instantiate (projectile, position, transform.rotation) as Rigidbody2D;
 			projectileInst.AddForce (new Vector2(direction * 0.05F * speed, 0), ForceMode2D.Impulse);
 		}

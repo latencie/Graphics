@@ -9,6 +9,7 @@ public class PlayerBehaviourScript : MonoBehaviour {
 	public float rotation;
 	public int jumpfactor;
 	public bool grounded = true;
+	public Component camera;
 
 	// Use this for initialization
 	void Start () {
@@ -25,6 +26,7 @@ public class PlayerBehaviourScript : MonoBehaviour {
 			translation = Input.GetAxis("Horizontal") * speed;
 			translation *= Time.deltaTime;
 			transform.Translate(-Vector3.left * translation);
+			camera.transform.Translate(-Vector3.left * translation);
 		}
 
 		// if d, go right
@@ -32,6 +34,7 @@ public class PlayerBehaviourScript : MonoBehaviour {
 			translation = Input.GetAxis ("Horizontal") * speed;
 			translation *= Time.deltaTime;
 			transform.Translate (Vector3.right * translation);
+			camera.transform.Translate(Vector3.right * translation);
 		}
 	
 		// if w, jump

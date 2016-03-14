@@ -8,12 +8,13 @@ public class PlayerBehaviourScript : MonoBehaviour {
 	public float translation;
 	public float rotation;
 	public int jumpfactor;
+	public bool grounded = true;
 
 	// Use this for initialization
 	void Start () {
 		speed = 10.0F;
 		rotationSpeed = 50.0F;
-		jumpfactor = 2;
+		jumpfactor = 1;
 	}
 
 	// Update is called once per frame
@@ -32,12 +33,15 @@ public class PlayerBehaviourScript : MonoBehaviour {
 			translation *= Time.deltaTime;
 			transform.Translate (Vector3.right * translation);
 		}
-
+	
 		// if w, jump
-		if (Input.GetKey (KeyCode.W)) {
-			translation = Input.GetAxis ("Vertical") * jumpfactor * speed;
-			translation *= Time.deltaTime;
-			transform.Translate (Vector3.up * translation);
+		if (Input.GetKey (KeyCode.W) && grounded == true) {
+			grounded = false;
+			GetComponent<Rigidbody2D>().AddForce(new Vector2(0,12), ForceMode2D.Impulse);
+		}
+
+		if(grounded == false && GetComponent<Rigidbody2D>().velocity.y == 0) {
+			grounded = true;
 		}
 	}
 }

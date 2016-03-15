@@ -2,7 +2,12 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/PlayerBehaviourScript.cs">
     <Files>
+<<<<<<< HEAD
       <File FileName="Assets/PlayerBehaviourScript.cs" Line="28" Column="60" />
+=======
+      <File FileName="Assets/PlayerBehaviourScript.cs" Line="1" Column="1" />
+      <File FileName="Assets/ProjectileBehaviourScript.cs" Line="17" Column="21" />
+>>>>>>> 3acf427ec758c93004850304b7c8596e5ed3ad92
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

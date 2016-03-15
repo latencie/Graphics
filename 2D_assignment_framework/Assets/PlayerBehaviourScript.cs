@@ -60,7 +60,7 @@ public class PlayerBehaviourScript : MonoBehaviour {
 			fired = true;
 			// spawning position depends on direction
 			Vector2 position;
-			position = new Vector2(transform.position.x + (direction - 1) * 0.5F + (direction + 1) * 0.5F, transform.position.y);
+			position = new Vector2(transform.position.x + direction, transform.position.y);
 			projectileInst = Instantiate (projectile, position, transform.rotation) as Rigidbody2D;
 			projectileInst.AddForce (new Vector2(direction * 0.05F * speed, 0), ForceMode2D.Impulse);
 		}

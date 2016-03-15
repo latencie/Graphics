@@ -13,7 +13,7 @@ public class ProjectileBehaviourScript : MonoBehaviour {
 	
 	}
 
-	void OnCollisionEnter2D(Collision collision) {
+	void OnCollisionEnter2D() {
 		Destroy(gameObject);
 	}
 

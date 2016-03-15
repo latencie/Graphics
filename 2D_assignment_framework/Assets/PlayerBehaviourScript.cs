@@ -15,15 +15,17 @@ public class PlayerBehaviourScript : MonoBehaviour {
 	public Rigidbody2D projectile;
 	public Rigidbody2D projectileInst;
 	public float projectilespeed;
+	public float shootFactorY;
 
-	// Use this for initialization
+	// initialization of variables
 	void Start () {
 		direction = 1;
 		speed = 10.0F;
 		rotationSpeed = 50.0F;
-		jumpfactor = 1;
+		jumpfactor = 12;
 		projectile = (Rigidbody2D) UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Projectile.prefab", typeof(Rigidbody2D));
 		projectilespeed = 0.03F * speed;
+		shootFactorY = 0.2F;
 	}
 
 	// Update is called once per frame
@@ -50,9 +52,10 @@ public class PlayerBehaviourScript : MonoBehaviour {
 		// if w, jump
 		if (Input.GetKey (KeyCode.W) && grounded == true) {
 			grounded = false;
-			GetComponent<Rigidbody2D>().AddForce(new Vector2(0,12), ForceMode2D.Impulse);
+			GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpfactor), ForceMode2D.Impulse);
 		}
 
+		// update "grounded" to correct boolean
 		if(grounded == false && GetComponent<Rigidbody2D>().velocity.y == 0) {
 			grounded = true;
 		}
@@ -63,10 +66,12 @@ public class PlayerBehaviourScript : MonoBehaviour {
 			// spawning position depends on direction
 			Vector2 position;
 			position = new Vector2(transform.position.x + direction, transform.position.y);
+			// instantiate and shoot projectile
 			projectileInst = Instantiate (projectile, position, transform.rotation) as Rigidbody2D;
-			projectileInst.AddForce (new Vector2(direction * projectilespeed, 0.2F * projectilespeed), ForceMode2D.Impulse);
+			projectileInst.AddForce (new Vector2(direction * projectilespeed, shootFactorY * projectilespeed), ForceMode2D.Impulse);
 		}
 
+		// update "fired" to correct boolean 
 		if(fired == true && !projectileInst) {
 			fired = false;
 		}

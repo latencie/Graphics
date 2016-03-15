@@ -16,6 +16,7 @@ public class PlayerBehaviourScript : MonoBehaviour {
 	public Rigidbody2D projectileInst;
 	public float projectilespeed;
 	public float shootFactorY;
+	public Transform onewayplatform;
 
 	// initialization of variables
 	void Start () {
@@ -24,7 +25,7 @@ public class PlayerBehaviourScript : MonoBehaviour {
 		rotationSpeed = 50.0F;
 		jumpfactor = 12;
 		projectile = (Rigidbody2D) UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Projectile.prefab", typeof(Rigidbody2D));
-		projectilespeed = 0.03F * speed;
+		projectilespeed = 0.02F * speed;
 		shootFactorY = 0.2F;
 	}
 
@@ -33,16 +34,10 @@ public class PlayerBehaviourScript : MonoBehaviour {
 
 		// if a, go left
 		if (Input.GetKey (KeyCode.A)) {
-<<<<<<< HEAD
-			translation = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
-			transform.Translate(-Vector3.left * translation);
-=======
 			direction = -1;
-			translation = Input.GetAxis("Horizontal") * speed;
+			translation = Input.GetAxis ("Horizontal") * speed;
 			translation *= Time.deltaTime;
 			transform.Translate(-Vector3.left * translation, transform.parent);
->>>>>>> 3acf427ec758c93004850304b7c8596e5ed3ad92
-			camera.transform.Translate(-Vector3.left * translation);
 		}
 
 		// if d, go right
@@ -51,7 +46,6 @@ public class PlayerBehaviourScript : MonoBehaviour {
 			translation = Input.GetAxis ("Horizontal") * speed;
 			translation *= Time.deltaTime;
 			transform.Translate (Vector3.right * translation, transform.parent);
-			camera.transform.Translate(Vector3.right * translation);
 		}
 	
 		// if w, jump
@@ -80,5 +74,13 @@ public class PlayerBehaviourScript : MonoBehaviour {
 		if(fired == true && !projectileInst) {
 			fired = false;
 		}
+	}
+
+	void OnTriggerEnter2D() {
+		Physics2D.IgnoreCollision (gameObject.GetComponent<BoxCollider2D> (), onewayplatform.GetComponent<Collider2D> ());
+	}
+
+	void OnTriggerExit2D() {
+		Physics2D.IgnoreCollision (gameObject.GetComponent<BoxCollider2D> (), onewayplatform.GetComponent<Collider2D> (), false);
 	}
 }

@@ -14,6 +14,7 @@ public class PlayerBehaviourScript : MonoBehaviour {
 	public Component camera;
 	public Rigidbody2D projectile;
 	public Rigidbody2D projectileInst;
+	public float projectilespeed;
 
 	// Use this for initialization
 	void Start () {
@@ -22,6 +23,7 @@ public class PlayerBehaviourScript : MonoBehaviour {
 		rotationSpeed = 50.0F;
 		jumpfactor = 1;
 		projectile = (Rigidbody2D) UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Projectile.prefab", typeof(Rigidbody2D));
+		projectilespeed = 0.03F * speed;
 	}
 
 	// Update is called once per frame
@@ -62,7 +64,7 @@ public class PlayerBehaviourScript : MonoBehaviour {
 			Vector2 position;
 			position = new Vector2(transform.position.x + direction, transform.position.y);
 			projectileInst = Instantiate (projectile, position, transform.rotation) as Rigidbody2D;
-			projectileInst.AddForce (new Vector2(direction * 0.05F * speed, 0), ForceMode2D.Impulse);
+			projectileInst.AddForce (new Vector2(direction * projectilespeed, 0.2F * projectilespeed), ForceMode2D.Impulse);
 		}
 
 		if(fired == true && !projectileInst) {

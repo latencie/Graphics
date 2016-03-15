@@ -23,8 +23,7 @@ public class PlayerBehaviourScript : MonoBehaviour {
 
 		// if a, go left
 		if (Input.GetKey (KeyCode.A)) {
-			translation = Input.GetAxis("Horizontal") * speed;
-			translation *= Time.deltaTime;
+			translation = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
 			transform.Translate(-Vector3.left * translation);
 			camera.transform.Translate(-Vector3.left * translation);
 		}

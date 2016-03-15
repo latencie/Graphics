@@ -7,23 +7,25 @@ public class PlayerBehaviourScript : MonoBehaviour {
 	public float rotationSpeed;
 	public float translation;
 	public float rotation;
-	public int jumpfactor;
+	public float jumpfactor;
 	public bool grounded = true;
 	public bool fired = false;
 	public int direction;
-	public Component camera;
 	public Rigidbody2D projectile;
 	public Rigidbody2D projectileInst;
 	public float projectilespeed;
 	public float shootFactorY;
 	public Transform onewayplatform;
+	public Vector3 SpawnPoint;
+	public float timeStamp;
+	public float shootCooldown = 7;
 
 	// initialization of variables
 	void Start () {
 		direction = 1;
 		speed = 10.0F;
 		rotationSpeed = 50.0F;
-		jumpfactor = 12;
+		jumpfactor = 11;
 		projectile = (Rigidbody2D) UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Projectile.prefab", typeof(Rigidbody2D));
 		projectilespeed = 0.02F * speed;
 		shootFactorY = 0.2F;
@@ -31,7 +33,6 @@ public class PlayerBehaviourScript : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
 		// if a, go left
 		if (Input.GetKey (KeyCode.A)) {
 			direction = -1;
@@ -60,8 +61,12 @@ public class PlayerBehaviourScript : MonoBehaviour {
 		}
 
 		// if space bar is pressed, shoot projectile
-		if (Input.GetKey(KeyCode.Space) && fired == false){
+		if (Input.GetKey(KeyCode.Space) && Time.time >= timeStamp ){
+			//Update the shooting cooldown
+			timeStamp = Time.time + shootCooldown;
+
 			fired = true;
+
 			// spawning position depends on direction
 			Vector2 position;
 			position = new Vector2(transform.position.x + direction, transform.position.y);
@@ -69,11 +74,13 @@ public class PlayerBehaviourScript : MonoBehaviour {
 			projectileInst = Instantiate (projectile, position, transform.rotation) as Rigidbody2D;
 			projectileInst.AddForce (new Vector2(direction * projectilespeed, shootFactorY * projectilespeed), ForceMode2D.Impulse);
 		}
+	}
 
-		// update "fired" to correct boolean 
-		if(fired == true && !projectileInst) {
-			fired = false;
+	void OnCollisionEnter2D(Collision2D col) {
+		if (col.gameObject.tag == "Enemy") {
+			transform.position = SpawnPoint;
 		}
+
 	}
 
 	void OnTriggerEnter2D() {

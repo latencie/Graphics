@@ -7,14 +7,19 @@ public class ProjectileBehaviourScript : MonoBehaviour {
 	void Start () {
 	
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 	
 	}
 
-	void OnCollisionEnter2D() {
-		Destroy(gameObject);
+	void OnCollisionEnter2D(Collision2D col) {
+
+		if (col.gameObject.tag == "Enemy") {
+			Destroy (col.gameObject);
+		}
+
+		Destroy (gameObject);
 	}
 
 	void OnBecameInvisible(){

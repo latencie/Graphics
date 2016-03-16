@@ -12,6 +12,7 @@ public class GameStateManager : MonoBehaviour {
 	private static int score = 0;
 	private static int lives = 5;
 	private static float time;
+	private static int level = 1;
 
 	void Start(){
 		if (instance != null) {
@@ -42,6 +43,10 @@ public class GameStateManager : MonoBehaviour {
 		time = Time.time;
 	}
 
+	public static int getLevel(){
+		return level;
+	}
+
 	public static void play(){
 		UnityEngine.SceneManagement.SceneManager.LoadScene (1);
 	}
@@ -53,4 +58,8 @@ public class GameStateManager : MonoBehaviour {
 		UnityEngine.SceneManagement.SceneManager.LoadScene (2);
 	}
 
+	public static void win(){
+		level += 1;
+		UnityEngine.SceneManagement.SceneManager.LoadScene (3);
+	}
 }

@@ -85,7 +85,9 @@ public class PlayerBehaviourScript : MonoBehaviour {
 		if (col.gameObject.tag == "Enemy") {
 			GameStateManager.lost ();
 		}
-
+		else if (col.gameObject.tag == "Coin") {
+			GameStateManager.win ();
+		}
 	}
 
 	void OnTriggerEnter2D(Collider2D col) {

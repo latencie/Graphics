@@ -53,6 +53,7 @@
      <Compile Include="Assets\ProjectileBehaviourScript.cs" />
      <Compile Include="Assets\UIScript.cs" />
      <Compile Include="Assets\WelcomeScene.cs" />
+     <Compile Include="Assets\WinScene.cs" />
  <Reference Include="UnityEngine.Networking">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>

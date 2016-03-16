@@ -47,10 +47,12 @@
   <ItemGroup>
      <Compile Include="Assets\CameraBehaviourScript.cs" />
      <Compile Include="Assets\EnemyBehaviourScript.cs" />
-     <Compile Include="Assets\EventScript.cs" />
+     <Compile Include="Assets\GameOverScene.cs" />
      <Compile Include="Assets\GameStateManager.cs" />
      <Compile Include="Assets\PlayerBehaviourScript.cs" />
      <Compile Include="Assets\ProjectileBehaviourScript.cs" />
+     <Compile Include="Assets\UIScript.cs" />
+     <Compile Include="Assets\WelcomeScene.cs" />
  <Reference Include="UnityEngine.Networking">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>

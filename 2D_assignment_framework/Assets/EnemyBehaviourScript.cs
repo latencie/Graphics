@@ -11,14 +11,12 @@ public class EnemyBehaviourScript : MonoBehaviour {
 	public string move_dir = "left";
 	Vector3 walkAmount;
 	public Collider2D move_trigger;
-	public GameStateManager gamestate;
 
 	// initialization of variables
 	void Start () {
 		direction = 1;
 		speed = 2.0F;
 		rotationSpeed = 50.0F;
-		gamestate = GameStateManager.Instance;
 	}
 
 	// Update is called once per frame
@@ -50,7 +48,7 @@ public class EnemyBehaviourScript : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D collision){
 		if (collision.collider.gameObject.name == "Projectile(Clone)"){
 			Destroy (gameObject);
-			gamestate.setScore (5);
+			GameStateManager.setScore (5);
 		} 
 	}
 }

@@ -3,69 +3,54 @@ using System.Collections;
 
 
 /*
- * Singleton - Keeps the gamestate throughout the game
+ * Keeps the gamestate throughout the game
  */
 
-public class GameStateManager {
+public class GameStateManager : MonoBehaviour {
 
 	private static GameStateManager instance = null;
-	private int score;
-	private int lives;
-	private float time;
-	private bool gameOver;
+	private static int score = 0;
+	private static int lives = 5;
+	private static float time;
 
-	// intializes a GameState instance
-	protected GameStateManager ()
-	{
-		gameOver = false;
-		score = 0;
-		lives = 5;
-		time = (int) Time.fixedTime;
-	}
-
-	// returns singleton GameState instance
-	public static GameStateManager Instance {
-		get {
-			if (GameStateManager.instance == null) {
-				GameStateManager.instance = new GameStateManager();
-			}
-			return GameStateManager.instance;
+	void Start(){
+		if (instance != null) {
+			GameObject.Destroy (gameObject);
+		} else {
+			GameObject.DontDestroyOnLoad (gameObject);
+			instance = this;
 		}
 	}
 
-	public int getScore(){
+	public static int getScore(){
 		return score;
 	}
 
-	public int getLives(){
-		return lives;
-	}
-
-	public void setScore(int points){
+	public static void setScore(int points){
 		score += points;
 	}
 
-	public void setLives(int leftLives){
-		lives = leftLives;
+	public static int getLives(){
+		return lives;
 	}
 
-	public float getTime(){
+	public static float getTime(){
 		return time;
 	}
 
-	public void setTime(){
+	public static void setTime(){
 		time = Time.time;
 	}
 
-	public void setGameOver(){
-		gameOver = true;
+	public static void play(){
+		UnityEngine.SceneManagement.SceneManager.LoadScene (1);
 	}
 
-	public void gameNotOver(){
-		gameOver = false;
+	public static void lost(){
+		score = 0;
+		setTime ();
+		lives -= 1;
+		UnityEngine.SceneManagement.SceneManager.LoadScene (2);
 	}
 
-	public bool isGameOver(){
-		return gameOver;
-	}
 }

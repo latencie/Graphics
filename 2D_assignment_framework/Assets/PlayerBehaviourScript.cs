@@ -19,6 +19,7 @@ public class PlayerBehaviourScript : MonoBehaviour {
 	public Vector3 SpawnPoint;
 	public float timeStamp;
 	public float shootCooldown = 7;
+	public GameStateManager gamestate;
 
 	// initialization of variables
 	void Start () {
@@ -29,6 +30,7 @@ public class PlayerBehaviourScript : MonoBehaviour {
 		projectile = (Rigidbody2D) UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Projectile.prefab", typeof(Rigidbody2D));
 		projectilespeed = 0.02F * speed;
 		shootFactorY = 0.2F;
+		gamestate = GameStateManager.Instance;
 	}
 
 	// Update is called once per frame
@@ -74,11 +76,16 @@ public class PlayerBehaviourScript : MonoBehaviour {
 			projectileInst = Instantiate (projectile, position, transform.rotation) as Rigidbody2D;
 			projectileInst.AddForce (new Vector2(direction * projectilespeed, shootFactorY * projectilespeed), ForceMode2D.Impulse);
 		}
+
+		// method to test restarting of level
+		if (transform.position.y < -20){
+			restartLevel ();
+		}
 	}
 
 	void OnCollisionEnter2D(Collision2D col) {
 		if (col.gameObject.tag == "Enemy") {
-			transform.position = SpawnPoint;
+			restartLevel ();
 		}
 
 	}
@@ -91,5 +98,17 @@ public class PlayerBehaviourScript : MonoBehaviour {
 
 	void OnTriggerExit2D() {
 		Physics2D.IgnoreCollision (gameObject.GetComponent<BoxCollider2D> (), onewayplatform.GetComponent<Collider2D> (), false);
+	}
+		
+	void restartLevel(){
+		gamestate.setGameOver ();
+		int leftLives = gamestate.getLives () - 1;
+		if (leftLives > 0){
+			gamestate.setScore (-gamestate.getScore());
+			gamestate.setTime ();
+			gamestate.setLives (leftLives);
+			gamestate.gameNotOver ();
+			Application.LoadLevel(Application.loadedLevel);
+		}
 	}
 }

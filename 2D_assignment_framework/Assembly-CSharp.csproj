@@ -47,6 +47,8 @@
   <ItemGroup>
      <Compile Include="Assets\CameraBehaviourScript.cs" />
      <Compile Include="Assets\EnemyBehaviourScript.cs" />
+     <Compile Include="Assets\EventScript.cs" />
+     <Compile Include="Assets\GameStateManager.cs" />
      <Compile Include="Assets\PlayerBehaviourScript.cs" />
      <Compile Include="Assets\ProjectileBehaviourScript.cs" />
  <Reference Include="UnityEngine.Networking">

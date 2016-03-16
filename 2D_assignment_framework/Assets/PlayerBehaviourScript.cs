@@ -26,7 +26,7 @@ public class PlayerBehaviourScript : MonoBehaviour {
 		speed = 10.0F;
 		rotationSpeed = 50.0F;
 		jumpfactor = 11;
-		projectile = (Rigidbody2D) UnityEditor.AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Projectile.prefab", typeof(Rigidbody2D));
+		projectile = (Rigidbody2D) Resources.Load("Prefabs/Projectile", typeof(Rigidbody2D));
 		projectilespeed = 0.02F * speed;
 		shootFactorY = 0.2F;
 	}

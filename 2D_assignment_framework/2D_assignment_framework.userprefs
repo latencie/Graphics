@@ -1,13 +1,11 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/UIscript.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/PlayerBehaviourScript.cs">
     <Files>
-      <File FileName="Assets/UIscript.cs" Line="7" Column="16" />
-      <File FileName="Assets/ProjectileBehaviourScript.cs" Line="1" Column="1" />
-      <File FileName="Assets/PlayerBehaviourScript.cs" Line="33" Column="41" />
-      <File FileName="Assets/EnemyBehaviourScript.cs" Line="21" Column="41" />
-      <File FileName="Assets/CameraBehaviourScript.cs" Line="1" Column="1" />
-      <File FileName="Assets/GameStateManager.cs" Line="71" Column="2" />
+      <File FileName="Assets/UIScript.cs" Line="1" Column="1" />
+      <File FileName="Assets/GameStateManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/WelcomeScene.cs" Line="1" Column="1" />
+      <File FileName="Assets/PlayerBehaviourScript.cs" Line="29" Column="46" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

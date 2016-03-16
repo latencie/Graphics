@@ -83,8 +83,10 @@ public class PlayerBehaviourScript : MonoBehaviour {
 
 	}
 
-	void OnTriggerEnter2D() {
-		Physics2D.IgnoreCollision (gameObject.GetComponent<BoxCollider2D> (), onewayplatform.GetComponent<Collider2D> ());
+	void OnTriggerEnter2D(Collider2D col) {
+		if (col.gameObject.tag == "PlatformTrigger") {
+			Physics2D.IgnoreCollision (gameObject.GetComponent<BoxCollider2D> (), onewayplatform.GetComponent<Collider2D> ());
+		}
 	}
 
 	void OnTriggerExit2D() {

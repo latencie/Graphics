@@ -9,7 +9,6 @@ public class PlayerBehaviourScript : MonoBehaviour {
 	public float rotation;
 	public float jumpfactor;
 	public bool grounded = true;
-	public bool fired = false;
 	public int direction;
 	public Rigidbody2D projectile;
 	public Rigidbody2D projectileInst;
@@ -18,7 +17,7 @@ public class PlayerBehaviourScript : MonoBehaviour {
 	public Transform onewayplatform;
 	public Vector3 SpawnPoint;
 	public float timeStamp;
-	public float shootCooldown = 7;
+	public float shootCooldown = 0.2F;
 
 	// initialization of variables
 	void Start () {
@@ -64,9 +63,6 @@ public class PlayerBehaviourScript : MonoBehaviour {
 		if (Input.GetKey(KeyCode.Space) && Time.time >= timeStamp ){
 			//Update the shooting cooldown
 			timeStamp = Time.time + shootCooldown;
-
-			fired = true;
-
 			// spawning position depends on direction
 			Vector2 position;
 			position = new Vector2(transform.position.x + direction, transform.position.y);

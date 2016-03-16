@@ -8,7 +8,7 @@ public class WinScene : MonoBehaviour {
 		void OnGUI()
 		{
 			GUI.DrawTexture(new Rect(0,0,Screen.width,Screen.height), winTexture);
-			if (GameStateManager.getLevel () < 2) {
+			if (GameStateManager.getLevel () < 3) {
 				if (GUI.Button (new Rect (Screen.width / 2, Screen.height / 2 + 50 , 150, 25), "Next Level")) {
 					GameStateManager.play ();
 				}

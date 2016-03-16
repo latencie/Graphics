@@ -48,7 +48,8 @@ public class GameStateManager : MonoBehaviour {
 	}
 
 	public static void play(){
-		UnityEngine.SceneManagement.SceneManager.LoadScene (1);
+		string scene = "Level_" + level;
+		UnityEngine.SceneManagement.SceneManager.LoadScene (scene);
 	}
 
 	public static void lost(){

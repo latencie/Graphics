@@ -4,7 +4,6 @@ using System.Collections;
 public class PlayerBehaviourScript : MonoBehaviour {
 
 	public float speed;
-	public float rotationSpeed;
 	public float translation;
 	public float rotation;
 	public float jumpfactor;
@@ -15,19 +14,24 @@ public class PlayerBehaviourScript : MonoBehaviour {
 	public float projectilespeed;
 	public float shootFactorY;
 	public Transform onewayplatform;
-	public Vector3 SpawnPoint;
 	public float timeStamp;
 	public float shootCooldown = 0.2F;
+	public Sprite left_sprite;
+	public Sprite right_sprite;
+	public Sprite shooting_sprite;
+	public Sprite shooting_sprite_left;
+
+	private SpriteRenderer spriteRenderer; 
 
 	// initialization of variables
 	void Start () {
 		direction = 1;
 		speed = 10.0F;
-		rotationSpeed = 50.0F;
 		jumpfactor = 11;
 		projectile = (Rigidbody2D) Resources.Load("Prefabs/Projectile", typeof(Rigidbody2D));
-		projectilespeed = 0.02F * speed;
-		shootFactorY = 0.2F;
+		projectilespeed = 0.01F * speed;
+		shootFactorY = 0.1F;
+		spriteRenderer = GetComponent<SpriteRenderer>();
 	}
 
 	// Update is called once per frame
@@ -38,6 +42,12 @@ public class PlayerBehaviourScript : MonoBehaviour {
 			translation = Input.GetAxis ("Horizontal") * speed;
 			translation *= Time.deltaTime;
 			transform.Translate(-Vector3.left * translation, transform.parent);
+
+			//chane side sprite is looking
+			if (spriteRenderer.sprite != left_sprite) {
+				spriteRenderer.sprite = left_sprite;
+			}
+
 		}
 
 		// if d, go right
@@ -46,6 +56,11 @@ public class PlayerBehaviourScript : MonoBehaviour {
 			translation = Input.GetAxis ("Horizontal") * speed;
 			translation *= Time.deltaTime;
 			transform.Translate (Vector3.right * translation, transform.parent);
+
+			//change side sprite is looking
+			if (spriteRenderer.sprite != right_sprite) {
+				spriteRenderer.sprite = right_sprite;
+			}
 		}
 	
 		// if w, jump
@@ -69,6 +84,16 @@ public class PlayerBehaviourScript : MonoBehaviour {
 			// instantiate and shoot projectile
 			projectileInst = Instantiate (projectile, position, transform.rotation) as Rigidbody2D;
 			projectileInst.AddForce (new Vector2(direction * projectilespeed, shootFactorY * projectilespeed), ForceMode2D.Impulse);
+
+
+			//change side sprite to shooting position
+			if (spriteRenderer.sprite == right_sprite) {
+				spriteRenderer.sprite = shooting_sprite;
+			}
+
+			else if (spriteRenderer.sprite == left_sprite) {
+					spriteRenderer.sprite = shooting_sprite_left;
+				}
 		}
 
 		// method to test restarting of level
@@ -93,6 +118,8 @@ public class PlayerBehaviourScript : MonoBehaviour {
 	}
 
 	void OnTriggerExit2D() {
-		Physics2D.IgnoreCollision (gameObject.GetComponent<BoxCollider2D> (), onewayplatform.GetComponent<Collider2D> (), false);
+		if (onewayplatform) {
+			Physics2D.IgnoreCollision (gameObject.GetComponent<BoxCollider2D> (), onewayplatform.GetComponent<Collider2D> (), false);
+		}
 	}
 }

@@ -4,11 +4,8 @@ using System.Collections;
 public class EnemyBehaviourScript : MonoBehaviour {
 
 	public float speed;
-	public float rotationSpeed;
-	public float translation;
-	public float rotation;
 	public int direction;
-	public string move_dir = "left";
+	public string move_dir;
 	Vector3 walkAmount;
 	public Collider2D move_trigger;
 
@@ -16,7 +13,7 @@ public class EnemyBehaviourScript : MonoBehaviour {
 	void Start () {
 		direction = 1;
 		speed = 2.0F;
-		rotationSpeed = 50.0F;
+		move_dir = "left";
 	}
 
 	// Update is called once per frame
@@ -45,9 +42,10 @@ public class EnemyBehaviourScript : MonoBehaviour {
 	}
 
 
-	void OnCollisionEnter2D(Collision2D collision){
-		if (collision.collider.gameObject.name == "Projectile(Clone)"){
+	void OnCollisionEnter2D(Collision2D col){
+		if (col.collider.gameObject.name == "Projectile(Clone)"){
 			Destroy (gameObject);
+			Destroy (col.gameObject);
 			GameStateManager.setScore (5);
 		} 
 	}
